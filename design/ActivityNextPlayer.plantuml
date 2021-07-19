@@ -1,0 +1,17 @@
+@startuml
+
+title Next Player
+
+start
+
+if (this.currentPlayer1) then (yes)
+    :current player = player 1;
+else (no)
+    :current player = player 2;
+endif
+
+:this.currentPlayer1 = not(this.currentPlayer1);
+:return current player;
+stop
+
+@enduml

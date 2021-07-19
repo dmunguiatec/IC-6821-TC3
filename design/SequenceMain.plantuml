@@ -1,0 +1,55 @@
+@startuml
+
+title "TicTacToe start game"
+
+autoactivate on
+actor User
+boundary "TicTacToe" as Main
+
+User -> Main : ""__main()__""
+create TicTacToe
+Main -> TicTacToe : ""<<new>>""
+    participant ComponentFactory as Factory
+    TicTacToe -> Factory: ""__gameController(level, auto1, auto2)__""
+        Factory -> Factory: ""__manualMoveSpec()__""
+            create DefaultManualMoveSpec
+            Factory -> DefaultManualMoveSpec: ""<<new>>""
+                return ""manualMoveSpec""
+            return ""manualMoveSpec""
+
+        Factory -> Factory: ""__board()__""
+            create CountingBoard
+            Factory -> CountingBoard: ""<<new>>""
+                return ""board""
+            return ""board""
+
+        Factory -> Factory: ""__autoPlayerStrategy(level)__""
+            note left : Por ahora solo acepta nivel = 1,\n cualquier otro nivel es un error
+            create RandomAutoPlayerStrategy as Strategy
+            Factory -> Strategy: ""<<new>>""
+                return ""strategy""
+            return ""strategy""
+
+        Factory -> Factory: ""__player(1, auto1)__""
+            create "player1:DefaultPlayer" as P1
+            Factory -> P1: ""<<new>>(Token.X, auto1, "Jugador 1")""
+                return ""player1""
+            return ""player1""
+
+        Factory -> Factory: ""__player(2, auto2)__""
+            create "player2:DefaultPlayer" as P2
+            Factory -> P2: ""<<new>>(Token.X, auto2, "Jugador 2")""
+                return ""player2""
+            return ""player2""
+
+
+    create control DefaultGameController as Cx
+    Factory -> Cx: ""<<new>>(manualMoveSpec, board, strategy, player1, player2)""
+    return ""controller""
+    return ""controller""
+    return ""ticTacToe""
+
+Main -> TicTacToe: ""start()""
+deactivate TicTacToe
+
+@enduml

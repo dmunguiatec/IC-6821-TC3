@@ -1,0 +1,31 @@
+@startuml
+
+title TicTacToe.start()
+
+
+start
+
+:currentPlayer = controller.nextPlayer();
+:boardState = controller.getBoardstate()\n\nPrint boardState;
+
+while (not finished?)  is (yes)
+  if (currentPlayer is auto?) then (yes)
+    :status = controller.doAutoMove(currentPlayer);
+  else (no)
+    :move = Read line from stdin;
+    :status = controller.doManualMove(currentPlayer, move);
+  endif
+  :Print status message;
+  if (status is Token Set?) then (yes)
+    :Switch player\n\ncurrentPlayer = controller.nextPlayer();
+  endif
+  if (status is Tied or X Wins or O Wins) then (yes)
+    :finished = true;
+  endif
+
+  :boardState = controller.getBoardstate()\n\nPrint boardState;
+endwhile (no)
+
+stop
+
+@enduml

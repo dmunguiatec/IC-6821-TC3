@@ -1,0 +1,27 @@
+@startuml
+
+title RandomAutoPlayerStrategy
+
+
+start
+
+if (boardState is full) then (yes)
+    stop
+endif
+
+if (currentPlayer is not auto) then (yes)
+    stop
+endif
+
+repeat :while(true);
+    :row = random([0..2]) \ncol = random([0..2]);
+    if (not visited[row][col]) then (yes)
+        if (boardState.getPosition(<row, col>) is empty) then (yes)
+            :return <row, col>;
+            stop
+        else (no)
+            :visited[row][col] = true;
+        endif
+    endif
+repeat while
+@enduml
