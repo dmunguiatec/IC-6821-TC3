@@ -301,10 +301,13 @@ public class StructureCheck extends AbstractCheck {
                     String.format(MSG_MISSING_IMPLEMENTS, this.abstractionType, this.name, this.implementsInterfaces));
         }
 
-        final List<DetailAST> idents = new ASTWalker(implementsClause).filterTokensByType(TokenTypes.IDENT);
-        final List<String> missingInterfaces = idents.stream()
+        final List<String> idents = new ASTWalker(implementsClause)
+                .filterTokensByType(TokenTypes.IDENT).stream()
                 .map(DetailAST::getText)
-                .filter(ident -> !this.implementsInterfaces.contains(ident))
+                .collect(Collectors.toList());
+
+        final List<String> missingInterfaces = this.implementsInterfaces.stream()
+                .filter(inter -> !idents.contains(inter))
                 .collect(Collectors.toList());
 
         missingInterfaces.forEach(missing ->
